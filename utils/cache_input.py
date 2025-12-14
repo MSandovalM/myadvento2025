@@ -40,6 +40,8 @@ def get_input(number_day: int):
     result = requests.get(day_endpoint, cookies={"session": session_cookie})
 
     if result.status_code == 200: 
+        print(f"Request response with {result.status_code}")
+        print(f"Saving input, {number_day}.txt, personal input")
         save_input(number_day, result.text)
         return result.text
     else:
