@@ -53,6 +53,35 @@ def count_entry(entry:str):
 #                 if seed != value_str[limit + 1: len(seed)]:
 #                     break
 
+def check_repeated_pattern(value:int) -> bool:
+    value = str(value)
+    length = len(value)
+
+    for i in range(1, length // 2 + 1):
+        pattern = value[0:i]
+        repeated = pattern * (length // i)
+        # print(f"Checking pattern '{pattern}' gives '{repeated}'")
+        if repeated == value:
+            return True
+
+    return False
+
+def find_invalid_ids_second(entry:str):
+    entry_list = entry.split(",")
+
+    invalid_numbers = []
+
+    for entry in entry_list:
+        range_val = entry.split("-")
+        start = range_val[0]
+        end = range_val[1]
+
+        for id_value in range(int(start), int(end) + 1): 
+            if check_repeated_pattern(id_value):
+                invalid_numbers.append(id_value)
+
+    return sum([int(val) for val in invalid_numbers])
+
 
 def find_sum_invalid_numbers(entry:str):
     entry_list = entry.split(",")
@@ -102,7 +131,11 @@ def find_sum_invalid_numbers(entry:str):
 if __name__ == "__main__":
 
     entry = get_input(NUMBER_DAY)
-    count_entry(entry=entry)
+    # count_entry(entry=entry)
 
-    # find_min_prefix(entry=small_test_input)
-    find_sum_invalid_numbers(entry=test_input)
+    # # find_min_prefix(entry=small_test_input)
+    # find_sum_invalid_numbers(entry=test_input)
+
+    ans = find_invalid_ids_second(entry=entry)
+
+    print(ans)
