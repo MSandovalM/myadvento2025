@@ -1,7 +1,7 @@
 from utils.cache_input import get_input
 
 NUMBER_DAY = "3"
-test_input = "987654321111111,811111111111119,234234234234278,818181911112111"
+test_input = "234234234234278,987654321111111,811111111111119,818181911112111"
 
 small_test_1 = "987654321111111"
 
@@ -26,17 +26,6 @@ def get_max_value(entry:str) -> int:
     return max_value
 
 def first_part(entry_raw:str):
-    # entry_list = []
-    # try:
-    #     entry_list = entry_raw.split(",")
-    # except SyntaxError:
-    #     print("Incorrect entry")
-
-    # try:
-    #     entry_list = entry_raw.splitlines()
-    # except SyntaxError:
-    #     print("Incorrect entry")
-
     entry_list = entry_raw.splitlines()
 
     if entry_list:
@@ -49,7 +38,71 @@ def first_part(entry_raw:str):
     
     return None
 
+def second_part(entry_raw:str, test:bool=False) -> int:
+    entry_list = []
+    sum_entries = 0
+    
+    if test:
+        entry_list = entry_raw.split(",")
+    else:
+        entry_list = entry_raw.splitlines()
+
+    if entry_list:
+
+        for entry in entry_list:
+            result = get_twelve_value(entry)
+            sum_entries += int(result)
+
+        return sum_entries
+    
+    return 0
+        
+def get_twelve_value(raw_value:str) -> str:
+    fixed_len = 12
+    n_remaining = len(raw_value)
+    d = n_remaining - fixed_len # num of digits to delete
+    l_remaining = n_remaining - d
+    result_val = ""
+    work_str = raw_value
+    nums_del = 0
+    while l_remaining > 0:
+        curr_max = 0
+        idx_max = 0
+        w_size = n_remaining - l_remaining + 1
+        for i in range(0, w_size):
+            if int(work_str[i]) > int(curr_max):
+                curr_max = work_str[i]
+                idx_max = i
+
+        # add value to string
+        result_val += curr_max
+        # delete everything before max id
+        work_str = work_str[idx_max + 1:]
+        # how many numbers we deleted?
+        nums_del += idx_max
+
+        if nums_del >= d:
+            break
+
+        n_remaining -= idx_max + 1
+        l_remaining -= 1
+
+    if len(result_val) < fixed_len:
+        result_val += work_str
+
+    if len(result_val) == fixed_len:
+        return result_val
+    else:
+        raise ValueError(f"Return error value from {get_twelve_value.__name__}")
+    
+
 def get_answer(entry: str):
+    """
+    Docstring for get_answer: Primer intento...
+    
+    :param entry: Description
+    :type entry: str
+    """
 
     entry_list = entry.split(",")
 
@@ -88,4 +141,6 @@ if __name__ == "__main__":
 
     # print(first_part(test_input))
 
-    print(first_part(personal_input))
+    # print(first_part(personal_input))
+
+    print(second_part(personal_input, test=False))
