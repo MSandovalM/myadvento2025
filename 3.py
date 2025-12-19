@@ -135,6 +135,17 @@ def get_answer(entry: str):
         print(ans_val)
 
 
+def check_repeated_pattern(value:str) -> bool:
+    length = len(value)
+
+    for i in range(1, length // 2 + 1):
+        pattern = value[0:i]
+        repeated = pattern * (length // i)
+        print(f"Checking pattern '{pattern}' gives '{repeated}'")
+        if repeated == value:
+            return True
+
+
 if __name__ == "__main__":
 
     personal_input = get_input(NUMBER_DAY)
